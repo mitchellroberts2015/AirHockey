@@ -109,10 +109,11 @@
 		</Compiler>
 		<Unit filename="include/Prediction.h" />
 		<Unit filename="include/calibrate.h" />
-		<Unit filename="include/videoProcessing.cpp" />
+		<Unit filename="include/vision.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Prediction.cpp" />
 		<Unit filename="src/calibrate.cpp" />
+		<Unit filename="src/vision.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

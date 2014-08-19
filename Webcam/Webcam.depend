@@ -1,11 +1,11 @@
 # depslib dependency file v1.0
-1407119646 source:c:\users\jeff\documents\codeblocks\webcam\main.cpp
+1408290979 source:c:\users\jeff\documents\codeblocks\webcam\main.cpp
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
 	<iostream>
 	"Prediction.h"
 	"calibrate.h"
-	"videoProcessing.h"
+	"vision.h"
 
 1387536597 c:\opencv\build\include\opencv2\opencv.hpp
 	"opencv2/core/core_c.h"
@@ -181,17 +181,38 @@
 
 1407003958 c:\users\paul_2\desktop\webcam\include\calibrate.h
 
-1407023578 c:\users\jeff\documents\codeblocks\webcam\include\prediction.h
+1407189149 source:c:\users\mitchell\documents\code_blocks\webcam\main.cpp
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	<iostream>
+	"Prediction.h"
+	"calibrate.h"
 
-1407003958 c:\users\jeff\documents\codeblocks\webcam\include\calibrate.h
+1407188804 c:\users\mitchell\documents\code_blocks\webcam\include\prediction.h
 
-1407118109 source:c:\users\jeff\documents\codeblocks\webcam\src\calibrate.cpp
+1407189149 c:\users\mitchell\documents\code_blocks\webcam\include\calibrate.h
 
-1407032708 source:c:\users\jeff\documents\codeblocks\webcam\src\prediction.cpp
+1407189149 source:c:\users\mitchell\documents\code_blocks\webcam\src\calibrate.cpp
+	<math.h>
+
+1407188804 source:c:\users\mitchell\documents\code_blocks\webcam\src\prediction.cpp
 	"Prediction.h"
 	<math.h>
 
-1407119702 source:c:\users\jeff\documents\codeblocks\webcam\include\videoprocessing.cpp
+1407188806 c:\users\jeff\documents\codeblocks\webcam\include\prediction.h
 
-1407119746 c:\users\jeff\documents\codeblocks\webcam\include\videoprocessing.h
+1407191649 c:\users\jeff\documents\codeblocks\webcam\include\calibrate.h
+
+1408162367 source:c:\users\jeff\documents\codeblocks\webcam\src\prediction.cpp
+	"Prediction.h"
+	<math.h>
+
+1408155777 source:c:\users\jeff\documents\codeblocks\webcam\src\calibrate.cpp
+	<math.h>
+
+1408248188 c:\users\jeff\documents\codeblocks\webcam\include\vision.h
+
+1408252118 source:c:\users\jeff\documents\codeblocks\webcam\src\vision.cpp
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/imgproc/imgproc.hpp>
 

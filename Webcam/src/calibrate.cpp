@@ -1,12 +1,10 @@
+#include <math.h>
+
 double getRawX(double x1, double y1, double x2, double y2, double x, double y)
 {
-    if (y1==y2)
+    if (y1==y2 || x1==x2)
     {
         return x;
-    }
-    if (x1==x2)
-    {
-        return y;
     }
     double slope1 = (y2-y1)/(x2-x1);
     double intercept1 = -slope1 * x1 + y1;
@@ -18,18 +16,14 @@ double getRawX(double x1, double y1, double x2, double y2, double x, double y)
 double getCalcX(double x1, double y1, double x2, double y2, double x, double y)
 {
     double raw = getRawX(x1,y1,x2,y2,x,y);
-    return (x1-raw) / (x1-x2);
+    return 1 - (x1-raw) / (x1-x2);
 }
 
 double getRawY(double x1, double y1, double x2, double y2, double x, double y)
 {
-    if (x1==x2)
+    if (y1==y2 || x1==x2)
     {
-        return y;
-    }
-    if (y1==y2)
-    {
-        return x;
+        return .5-y;
     }
     double xCo = getRawX(x1, y1, x2, y2, x, y);
     double slope = (y2-y1)/(x2-x1);
@@ -41,4 +35,11 @@ double getCalcY(double x1, double y1, double x2, double y2, double x, double y)
 {
     double raw = getRawY(x1,y1,x2,y2,x,y);
     return .5 - (y1-raw) / (y1-y2);
+}
+
+double getRatio(double x1, double y1, double x2, double y2, double x3, double y3)
+{
+    double xLen = pow(pow(x1-x2,2)+pow(y1-y2,2),.5);
+    double yLen = pow(pow(x2-x3,2)+pow(y2-y3,2),.5);
+    return xLen / yLen;
 }

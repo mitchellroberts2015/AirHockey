@@ -10,7 +10,7 @@ class Prediction
         void addPoint(double x, double y);
         double getLastBounce();
         double getLastSlope();
-        double getAngle();
+        double getAngle(double s);
     protected:
     private:
 };

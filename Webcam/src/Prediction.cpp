@@ -34,7 +34,7 @@ double Prediction::getLastSlope()
 {
     double m = (y2-y1)/(x2-x1);
     double angle = atan(1/m);
-    double period = (1 / tan((3.14159265358979323846/2)-angle))*2;
+    double period = (1 / tan((M_PI/2)-angle))*2;
     double wall = (-m/fabs(m)*5-y1) / m + x1;
     wall = fmod(wall, period);
     if (getLastBounce()>period/2){
@@ -45,11 +45,12 @@ double Prediction::getLastSlope()
     }
 }
 
-double Prediction::getAngle()
+double Prediction::getAngle(double s)
 {
     double m = getLastSlope();
     double b = -m * getLastBounce() + m / fabs(m) / 2;
-    double det = (pow(m,2) + 1) * pow(r,2) - pow(b,2);
+    double det = pow(r,2) * (pow(s,2) + pow(m,2)) - pow(b*s,2);
+    //double det = r * (pow(m,2) * s + 1) - pow(b,2) * s;
     if (det < 0){
         if (b > 0)
             return 180;
@@ -57,9 +58,10 @@ double Prediction::getAngle()
             return 0;
     }
     else{
-        double xCo = (pow(det,.5) - b * m) / (pow(m,2) + 1);
+        double xCo = ((pow(det,.5)) - b * m) / (pow(s,2) + pow(m,2));
+        //double xCo = (pow(det,.5)) - b * m * s / (pow(m,2) * s + 1);
         double yCo = m * xCo + b;
-        double radians = atan(yCo/xCo);
-        return (180/3.14159265358979323846*radians)+90;
+        double radians = atan(yCo/(xCo*s));
+        return (180/M_PI*radians)+90;
     }
 }
