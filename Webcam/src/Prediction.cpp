@@ -7,6 +7,18 @@ Prediction::Prediction(double xa, double ya, double xb, double yb, double rad):
     //ctor
 }
 
+int Prediction::getSlopeSign()
+{
+    double m = (y2-y1)/(x2-x1);
+    return m/fabs(m);
+}
+
+int Prediction::getLastSlopeSign()
+{
+    double m = getLastSlope();
+    return (int)(m/fabs(m));
+}
+
 void Prediction::addPoint(double x, double y)
 {
     x2=x1;
@@ -15,13 +27,22 @@ void Prediction::addPoint(double x, double y)
     y1=y;
 }
 
-double Prediction::getLastBounce()
+double Prediction::getFirstBounce()
 {
     double m = (y2-y1)/(x2-x1);
     double angle = atan(1/m);
     double period = fabs(2*(tan(angle)));
     double wall = ((-m/fabs(m)/2)-y1) / m + x1;
     wall = fmod(wall, period);
+    return wall;
+}
+
+double Prediction::getLastBounce()
+{
+    double m = (y2-y1)/(x2-x1);
+    double angle = atan(1/m);
+    double period = fabs(2*(tan(angle)));
+    double wall = getFirstBounce();
     if (wall > period/2){
         return wall - period/2;
     }
@@ -36,7 +57,7 @@ double Prediction::getLastSlope()
     double angle = atan(1/m);
     double period = (1 / tan((M_PI/2)-angle))*2;
     double wall = (-m/fabs(m)*5-y1) / m + x1;
-    wall = fmod(wall, period);
+    wall = fmod(wall+period, period);
     if (getLastBounce()>period/2){
         return -m;
     }
