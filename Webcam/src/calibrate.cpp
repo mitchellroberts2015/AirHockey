@@ -51,10 +51,3 @@ Point getTiltedPoint(double x1, double y1, double x2, double y2, double x3, doub
     double yFinal = axisY + (.5-y) * xHeight-10;
     return Point((int)xFinal,(int)yFinal);
 }
-
-double getRatio(double x1, double y1, double x2, double y2, double x3, double y3)
-{
-    double xLen = pow(pow(x1-x2,2)+pow(y1-y2,2),.5);
-    double yLen = pow(pow(x2-x3,2)+pow(y2-y3,2),.5);
-    return xLen / yLen;
-}

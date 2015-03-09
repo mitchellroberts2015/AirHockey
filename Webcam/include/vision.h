@@ -4,6 +4,6 @@
 using namespace cv;
 
 Mat filter(Mat& src, Scalar minColor, Scalar maxColor);
-Vec3i findCircle(Mat& src, Scalar minColor, Scalar maxColor, int minRad, int maxRad);
+Vec3i findCircle(Mat& src, Scalar minColor, Scalar maxColor, int minRad, int maxRad, int blur);
 
 #endif // VISION_H_INCLUDED

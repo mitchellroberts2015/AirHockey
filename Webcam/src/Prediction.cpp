@@ -1,88 +1,132 @@
 #include "Prediction.h"
 #include <math.h>
 
-Prediction::Prediction(double xa, double ya, double xb, double yb, double rad):
-    x1(xa), y1(ya), x2(xb), y2(yb), r(rad)
+Prediction::Prediction(double rad, double aspect):
+    _r(imgSize/aspect*rad), _a(aspect)
 {
-    //ctor
+    _x1=_x2=_y1=_y2=0;
 }
 
-int Prediction::getSlopeSign()
+bool Prediction::isReady()
 {
-    double m = (y2-y1)/(x2-x1);
-    return m/fabs(m);
+    return _x1!=0 && _y1!=0;
 }
 
-int Prediction::getLastSlopeSign()
+void Prediction::clean()
 {
-    double m = getLastSlope();
-    return (int)(m/fabs(m));
+    _x1=_x2=_y1=_y2=0;
+}
+
+int Prediction::sign(double i)
+{
+    if (i > 0)
+        return 1;
+    return -1;
 }
 
 void Prediction::addPoint(double x, double y)
 {
-    x2=x1;
-    y2=y1;
-    x1=x;
-    y1=y;
+    _x1=_x2;
+    _y1=_y2;
+    _x2=x;
+    _y2=y;
 }
+
 
 double Prediction::getFirstBounce()
 {
-    double m = (y2-y1)/(x2-x1);
-    double angle = atan(1/m);
-    double period = fabs(2*(tan(angle)));
-    double wall = ((-m/fabs(m)/2)-y1) / m + x1;
-    wall = fmod(wall, period);
+    double m = getFirstSlope();
+    double period = 2*imgSize/fabs(m)/_a;
+    double wall;
+    if (m<0) {
+        wall = _x1 + _y1/m;
+    }
+    else {
+        wall = (_y1-(imgSize/_a))/m+_x1;
+    }
+    //wall = fmod(wall, period);
     return wall;
 }
 
 double Prediction::getLastBounce()
 {
-    double m = (y2-y1)/(x2-x1);
-    double angle = atan(1/m);
-    double period = fabs(2*(tan(angle)));
+    double m = getFirstSlope();
+    double period = 2*imgSize/fabs(m)/_a;
     double wall = getFirstBounce();
-    if (wall > period/2){
-        return wall - period/2;
-    }
-    else{
+    if (wall < 0) {
         return wall;
     }
+    wall = fmod(wall, period);
+    if (wall > period/2){
+        return wall;
+    }
+    else{
+        return wall-period/2;
+    }
+}
+
+double Prediction::getFirstSlope()
+{
+    return -(_y2-_y1)/(_x2-_x1);
+}
+
+int Prediction::getx2()
+{
+    return (int) _x2;
+}
+
+int Prediction::gety2()
+{
+    return (int) _y2;
 }
 
 double Prediction::getLastSlope()
 {
-    double m = (y2-y1)/(x2-x1);
-    double angle = atan(1/m);
-    double period = (1 / tan((M_PI/2)-angle))*2;
-    double wall = (-m/fabs(m)*5-y1) / m + x1;
-    wall = fmod(wall+period, period);
-    if (getLastBounce()>period/2){
-        return -m;
+    double m = getFirstSlope();
+    double period = 2*imgSize/fabs(m)/_a;
+    if (getFirstBounce() < 0) {
+        return m;
+    }
+    else if (getFirstBounce() > period/2){
+        return m;
     }
     else{
-        return m;
+        return -m;
     }
 }
 
-double Prediction::getAngle(double s)
+double Prediction::getAngle()
 {
     double m = getLastSlope();
-    double b = -m * getLastBounce() + m / fabs(m) / 2;
-    double det = pow(r,2) * (pow(s,2) + pow(m,2)) - pow(b*s,2);
-    //double det = r * (pow(m,2) * s + 1) - pow(b,2) * s;
-    if (det < 0){
-        if (b > 0)
-            return 180;
+    double x1= getLastBounce();
+    double y1;
+    if(x1<0) {
+        if(sign(m)==1)
+            y1 = -imgSize/2/_a;
         else
-            return 0;
+            y1 = imgSize/2/_a;
     }
     else{
-        double xCo = ((pow(det,.5)) - b * m) / (pow(s,2) + pow(m,2));
-        //double xCo = (pow(det,.5)) - b * m * s / (pow(m,2) * s + 1);
-        double yCo = m * xCo + b;
-        double radians = atan(yCo/(xCo*s));
-        return (180/M_PI*radians)+90;
+        if(sign(m)==1)
+            y1 = -imgSize/2/_a;
+        else
+            y1 = imgSize/2/_a;
+    }
+    double x2 = 0;
+    double y2 = y1 - x1*m;
+    double dx = x2 - x1;
+    double dy = y2 - y1;
+    double dr = pow(pow(dx,2)+pow(dy,2),.5);
+    double d = x1*y2-y1*x2;
+    double det = pow(_r*dr,2)-pow(d,2);
+    if (det >= 0) {
+        double x = (d*dy + fabs(dx)*pow(det,.5))/pow(dr,2);
+        double y = (-d*dx+dy*pow(det,.5))/pow(dr,2);
+        return 90-180/M_PI*atan(y/x);
+    }
+    else {
+        if (y1-m*x1 < imgSize/2/_a/2)
+            return 0;
+        return 180;
     }
 }
