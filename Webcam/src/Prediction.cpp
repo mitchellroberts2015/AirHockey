@@ -90,7 +90,7 @@ double Prediction::getLastSlope()
     else if (getFirstBounce() > period/2){
         return m;
     }
-    else{
+    else {
         return -m;
     }
 }
@@ -126,7 +126,7 @@ double Prediction::getAngle()
     }
     else {
         if (y1-m*x1 < imgSize/2/_a/2)
-            return 0;
-        return 180;
+            return 180;
+        return 0;
     }
 }
